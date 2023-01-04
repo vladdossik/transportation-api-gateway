@@ -13,3 +13,15 @@ kafka:
   topic: #
   groupId: transportation-api-gateway
   syncCacheTopic: sync-cache-encrypted
+
+  properties:
+    security:
+      protocol: PLAINTEXT
+    ssl:
+      key-password: null
+      key-store-location: /etc/config/ssl/mq.jks
+      key-store-password: null
+      key-store-type: JKS
+      trust-store-location: /etc/config/ssl/mq.jks
+      trust-store-password: null
+      trust-store-type: JKS
