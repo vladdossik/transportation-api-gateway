@@ -1,0 +1,15 @@
+logging:
+  level:
+    root: INFO
+
+server:
+  port: 8097
+
+services:
+  # if need to go to another services
+
+kafka:
+  bootstrapAddress: localhost:9092
+  topic: #
+  groupId: transportation-api-gateway
+  syncCacheTopic: sync-cache-encrypted
