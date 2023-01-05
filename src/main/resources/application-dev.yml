@@ -10,7 +10,7 @@ services:
 
 kafka:
   bootstrapAddress: localhost:9092
-  topic: #
+  # topic:
   groupId: transportation-api-gateway
   syncCacheTopic: sync-cache-encrypted
 
