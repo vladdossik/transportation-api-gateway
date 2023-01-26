@@ -34,7 +34,7 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "Запись уже существует"),
             @ApiResponse(responseCode = "503", description = "Сервис временно недоступен")
     })
-    @PostMapping("add")
+    @PostMapping("/add")
     public Mono<UserResponseDto> add(@Valid @RequestBody UserPostDto userPostDto) {
         return userServiceClient.post()
                 .uri(uriBuilder -> uriBuilder
@@ -53,7 +53,7 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "Запись уже существует"),
             @ApiResponse(responseCode = "503", description = "Сервис временно недоступен")
     })
-    @DeleteMapping("{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public Mono<Void> deleteById(@PathVariable Long id) {
         return userServiceClient.delete()
                 .uri(uriBuilder -> uriBuilder
@@ -71,7 +71,7 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "Запись уже существует"),
             @ApiResponse(responseCode = "503", description = "Сервис временно недоступен")
     })
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Mono<UserPutDto> update(@PathVariable Long id, @Valid @RequestBody UserPutDto userDto) {
         return userServiceClient.put()
                 .uri(uriBuilder -> uriBuilder
