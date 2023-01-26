@@ -33,3 +33,6 @@ management:
       show-details: always
     loggers.enabled: true
     prometheus.enabled: true
+
+services:
+  user-service-url: http://localhost:8082/v1/
