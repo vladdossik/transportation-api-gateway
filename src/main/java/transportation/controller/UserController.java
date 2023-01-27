@@ -19,6 +19,7 @@ import users.UserResponseDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("v1/users")
@@ -53,15 +54,15 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "Запись уже существует"),
             @ApiResponse(responseCode = "503", description = "Сервис временно недоступен")
     })
-    @DeleteMapping("/{id}/delete")
-    public Mono<Void> deleteById(@PathVariable Long id) {
+    @DeleteMapping("/{externalId}/delete")
+    public Mono<String> deleteById(@PathVariable UUID externalId) {
         return userServiceClient.delete()
                 .uri(uriBuilder -> uriBuilder
-                        .path("users/{id}/delete")
-                        .build(id))
+                        .path("users/{externalId}/delete")
+                        .build(externalId))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(Void.class);
+                .bodyToMono(String.class);
     }
 
     @Operation(summary = "Обновить данные пользователея")
@@ -71,15 +72,15 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "Запись уже существует"),
             @ApiResponse(responseCode = "503", description = "Сервис временно недоступен")
     })
-    @PutMapping("/{id}")
-    public Mono<UserPutDto> update(@PathVariable Long id, @Valid @RequestBody UserPutDto userDto) {
+    @PutMapping("/{externalId}")
+    public Mono<UserResponseDto> update(@PathVariable UUID externalId, @Valid @RequestBody UserPutDto userPutDto) {
         return userServiceClient.put()
                 .uri(uriBuilder -> uriBuilder
-                        .path("users/{id}")
-                        .build(id))
+                        .path("users/{externalId}")
+                        .build(externalId))
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(userDto))
+                .body(BodyInserters.fromValue(userPutDto))
                 .retrieve()
-                .bodyToMono(UserPutDto.class);
+                .bodyToMono(UserResponseDto.class);
     }
 }
