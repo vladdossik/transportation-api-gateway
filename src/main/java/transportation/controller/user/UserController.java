@@ -6,11 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import transportation.service.UserService;
 import users.UserPostDto;
 import users.UserPutDto;
 import users.UserResponseDto;
@@ -24,6 +26,7 @@ import java.util.UUID;
 public class UserController {
 
     private final WebClient userServiceClient;
+    private final UserService userService;
 
     @Operation(summary = "Добавить пользователя")
     @ApiResponses(value = {
@@ -33,7 +36,7 @@ public class UserController {
             @ApiResponse(responseCode = "503", description = "Сервис временно недоступен")
     })
     @PostMapping("/add")
-    public Mono<UserResponseDto> add(@Valid @RequestBody UserPostDto userPostDto) {
+    public Mono<UserResponseDto> add(@Valid @RequestBody UserPostDto userPostDto, UserResponseDto userResponseDto) {
         return userServiceClient.post()
                 .uri(uriBuilder -> uriBuilder
                         .path("users/add")
@@ -42,6 +45,7 @@ public class UserController {
                 .body(BodyInserters.fromValue(userPostDto))
                 .retrieve()
                 .bodyToMono(UserResponseDto.class);
+                //.doOnSuccess(userService::saveUser);
     }
 
     @Operation(summary = "Удалить пользователя по id")
